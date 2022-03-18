@@ -36,30 +36,30 @@ docker run -i --rm -v ./my_octavia_project_directory:/home/octavia-project --net
 # Commands reference
 
 ## `octavia` command flags
-| **Flag**         | **Description**                                    | **Env Variable**       | **Default**                                            |
-|------------------|----------------------------------------------------|------------------------|--------------------------------------------------------|
-| `--airbyte-url`  | The URL of the Airbyte instance you want to target.| `AIRBYTE_URL`          | `localhost:8000`                                       |
-| `--workspace_id` | The id of the workspace on which you want to work. | `AIRBYTE_WORKSPACE_ID` | The first workspace id found on your Airbyte instance. |
+| **Flag**         | **Description**            | **Env Variable**       | **Default**                                            |
+|------------------|----------------------------|------------------------|--------------------------------------------------------|
+| `--airbyte-url`  | Your Airbyte instance URL. | `AIRBYTE_URL`          | `http://localhost:8000`                                |
+| `--workspace-id` | Your Airbyte workspace id. | `AIRBYTE_WORKSPACE_ID` | The first workspace id found on your Airbyte instance. |
 
 ## `octavia` subcommands
 
-| **Command**                             | **Usage**                                                                         |
-|-----------------------------------------|-----------------------------------------------------------------------------------|
-| **octavia init**                        | Initialize required directories for the project.                                  |
-| **octavia list connectors sources**     | List all sources connectors available on the remote Airbyte instance.             |
-| **octavia list connectors destination** | List all destinations connectors available on the remote Airbyte instance.        |
-| **octavia list workspace sources**      | List existing sources in current the Airbyte workspace.                           |
-| **octavia list workspace destinations** | List existing destinations in the current Airbyte workspace.                      |
-| **octavia list workspace connections**  | List existing connections in the current Airbyte workspace.                       |
-| **octavia generate source**             | Generate a local YAML configuration for a new source.                             |
-| **octavia generate destination**        | Generate a local YAML configuration for a new destination.                        |
-| **octavia generate connection**         | Generate a local YAML configuration for a new connection.                         |
-| **octavia apply**                       | Create or update Airbyte remote resources according to local YAML configurations. |
+| **Command**                             | **Usage**                                                                           |
+|-----------------------------------------|-------------------------------------------------------------------------------------|
+| **`octavia init`**                        | Initialize required directories for the project.                                  |
+| **`octavia list connectors sources`**     | List all sources connectors available on the remote Airbyte instance.             |
+| **`octavia list connectors destination`** | List all destinations connectors available on the remote Airbyte instance.        |
+| **`octavia list workspace sources`**      | List existing sources in current the Airbyte workspace.                           |
+| **`octavia list workspace destinations`** | List existing destinations in the current Airbyte workspace.                      |
+| **`octavia list workspace connections`**  | List existing connections in the current Airbyte workspace.                       |
+| **`octavia generate source`**             | Generate a local YAML configuration for a new source.                             |
+| **`octavia generate destination`**        | Generate a local YAML configuration for a new destination.                        |
+| **`octavia generate connection`**         | Generate a local YAML configuration for a new connection.                         |
+| **`octavia apply`**                       | Create or update Airbyte remote resources according to local YAML configurations. |
 
 ### `octavia init`
 The `octavia init` commands scaffolds the local directory architecture which is required for running `octavia generate` and `octavia apply` commands.
 
-#### Synopsis
+#### Example
 ```bash
 $ mkdir my_octavia_project && cd my_octavia_project
 $ octavia init
@@ -74,7 +74,7 @@ connections  destinations sources
 ### `octavia list connectors sources`
 List all the source connectors currently available on your Airbyte instance.
 
-#### Synopsis
+#### Example
 ```bash
 $ octavia list connectors sources
 🐙 - Octavia is targetting your Airbyte instance running at http://localhost:8000 on workspace e1f46f7d-5354-4200-aed6-7816015ca54b.
@@ -88,7 +88,7 @@ Amazon Seller Partner           airbyte/source-amazon-seller-partner           0
 ### `octavia list connectors destinations`
 List all the destinations connectors currently available on your Airbyte instance.
 
-#### Synopsis
+#### Example
 ```bash
 $ octavia list connectors destinations
 🐙 - Octavia is targetting your Airbyte instance running at http://localhost:8000 on workspace e1f46f7d-5354-4200-aed6-7816015ca54b.
@@ -102,7 +102,7 @@ BigQuery (denormalized typed struct)  airbyte/destination-bigquery-denormalized 
 ### `octavia list connectors destinations`
 List all the destinations connectors currently available on your Airbyte instance.
 
-#### Synopsis
+#### Example
 ```bash
 $ octavia list connectors destinations
 🐙 - Octavia is targetting your Airbyte instance running at http://localhost:8000 on workspace e1f46f7d-5354-4200-aed6-7816015ca54b.
@@ -116,10 +116,9 @@ BigQuery (denormalized typed struct)  airbyte/destination-bigquery-denormalized 
 ### `octavia list workspace sources`
 List all the sources existing on your targeted Airbyte instance.
 
-#### Synopsis
+#### Example
 ```bash
 $ octavia list workspace sources
-🐙 - Octavia is targetting your Airbyte instance running at http://localhost:8000 on workspace e1f46f7d-5354-4200-aed6-7816015ca54b.
 NAME     SOURCE NAME  SOURCE ID
 weather  OpenWeather  c4aa8550-2122-4a33-9a21-adbfaa638544
 ```
@@ -127,10 +126,9 @@ weather  OpenWeather  c4aa8550-2122-4a33-9a21-adbfaa638544
 ### `octavia list workspace destinations`
 List all the destinations existing on your targeted Airbyte instance.
 
-#### Synopsis
+#### Example
 ```bash
 $ octavia list workspace destinations
-🐙 - Octavia is targetting your Airbyte instance running at http://localhost:8000 on workspace e1f46f7d-5354-4200-aed6-7816015ca54b.
 NAME   DESTINATION NAME  DESTINATION ID
 my_db  Postgres          c0c977c2-48e7-46fe-9f57-576285c26d42
 ```
@@ -138,13 +136,76 @@ my_db  Postgres          c0c977c2-48e7-46fe-9f57-576285c26d42
 ### `octavia list workspace connections`
 List all the connections existing on your targeted Airbyte instance.
 
-#### Synopsis
+#### Example
 ```bash
 $ octavia list workspace connections
-🐙 - Octavia is targetting your Airbyte instance running at http://localhost:8000 on workspace e1f46f7d-5354-4200-aed6-7816015ca54b.
 NAME           CONNECTION ID                         STATUS  SOURCE ID                             DESTINATION ID
 weather_to_pg  a4491317-153e-436f-b646-0b39338f9aab  active  c4aa8550-2122-4a33-9a21-adbfaa638544  c0c977c2-48e7-46fe-9f57-576285c26d42
 ```
+
+### `octavia generate source <DEFINITION_ID> <SOURCE_NAME>`
+Generate a YAML configuration for a source.
+The YAML file will be stored at `./sources/<resource_name>/configuration.yaml`.
+
+| **Argument**    | **Description**                                                                             |
+|-----------------|---------------------------------------------------------------------------------------------|
+| `DEFINITION_ID` | The source connector definition id. Can be retrieved using octavia list connectors sources. |
+| `SOURCE_NAME`   | The name you want to give to this source in Airbyte.                                          |
+
+#### Example
+```bash
+$ octavia generate source d8540a80-6120-485d-b7d6-272bca477d9b weather
+✅ - Created the source template for weather in ./sources/weather/configuration.yaml.
+```
+
+### `octavia generate destination <DEFINITION_ID> <DESTINATION_NAME>`
+Generate a YAML configuration for a destination.
+The YAML file will be stored at `./destinations/<destination_name>/configuration.yaml`.
+
+| **Argument**       | **Description**                                                                                       |
+|--------------------|-------------------------------------------------------------------------------------------------------|
+| `DEFINITION_ID`    | The destination connector definition id. Can be retrieved using octavia list connectors destinations. |
+| `DESTINATION_NAME` | The name you want to give to this destination in Airbyte.                                             |
+
+#### Example
+```bash
+$ octavia generate destination 25c5221d-dce2-4163-ade9-739ef790f503 my_db
+✅ - Created the destination template for my_db in ./destinations/my_db/configuration.yaml.
+```
+
+### `octavia generate connection --source <path-to-source-configuration.yaml> --destination <path-to-destination-configuration.yaml> <CONNECTION_NAME>`
+Generate a YAML configuration for a connection.
+The YAML file will be stored at `./connections/<connection_name>/configuration.yaml`.
+
+| **Option**      | **Required** | **Description**                                                                            |
+|-----------------|--------------|--------------------------------------------------------------------------------------------|
+| `--source`      | Yes          | Path to the YAML configuration file of the source you want to create a connection from.    |
+| `--destination` | Yes          | Path to the YAML configuration file of the destination you want to create a connection to. |
+
+| **Argument**      | **Description**                                          |
+|-------------------|----------------------------------------------------------|
+| `CONNECTION_NAME` | The name you want to give to this connection in Airbyte. |
+
+#### Example
+```bash
+$ octavia generate connection --source sources/weather/configuration.yaml --destination destinations/my_db/configuration.yaml weather_to_pg
+✅ - Created the connection template for weather_to_pg in ./connections/weather_to_pg/configuration.yaml.
+```
+
+### `octavia apply`
+TODO
+
+| **Option**      | **Required** | **Description**                                                                            |
+|-----------------|--------------|--------------------------------------------------------------------------------------------|
+| `--file`        | No           | Path to the YAML configuration files you want to create or update.                          |
+| `--force`       | No           | Does not display the update diff and updates without user prompt.                           |
+
+
+#### Example
+```bash
+TODO
+```
+
 
 # Secret management
 Sources and destinations configurations have credential fields that you **do not want to store as plain text and version on Git**.
