@@ -33,6 +33,118 @@ mkdir my_octavia_project_directory # Create your octavia project directory where
 docker run -i --rm -v ./my_octavia_project_directory:/home/octavia-project --network host -e AIRBYTE_URL="http://localhost:8000" airbyte/octavia-cli:dev
 ```
 
+# Commands reference
+
+## `octavia` command flags
+| **Flag**         | **Description**                                    | **Env Variable**       | **Default**                                            |
+|------------------|----------------------------------------------------|------------------------|--------------------------------------------------------|
+| `--airbyte-url`  | The URL of the Airbyte instance you want to target.| `AIRBYTE_URL`          | `localhost:8000`                                       |
+| `--workspace_id` | The id of the workspace on which you want to work. | `AIRBYTE_WORKSPACE_ID` | The first workspace id found on your Airbyte instance. |
+
+## `octavia` subcommands
+
+| **Command**                             | **Usage**                                                                         |
+|-----------------------------------------|-----------------------------------------------------------------------------------|
+| **octavia init**                        | Initialize required directories for the project.                                  |
+| **octavia list connectors sources**     | List all sources connectors available on the remote Airbyte instance.             |
+| **octavia list connectors destination** | List all destinations connectors available on the remote Airbyte instance.        |
+| **octavia list workspace sources**      | List existing sources in current the Airbyte workspace.                           |
+| **octavia list workspace destinations** | List existing destinations in the current Airbyte workspace.                      |
+| **octavia list workspace connections**  | List existing connections in the current Airbyte workspace.                       |
+| **octavia generate source**             | Generate a local YAML configuration for a new source.                             |
+| **octavia generate destination**        | Generate a local YAML configuration for a new destination.                        |
+| **octavia generate connection**         | Generate a local YAML configuration for a new connection.                         |
+| **octavia apply**                       | Create or update Airbyte remote resources according to local YAML configurations. |
+
+### `octavia init`
+The `octavia init` commands scaffolds the local directory architecture which is required for running `octavia generate` and `octavia apply` commands.
+
+#### Synopsis
+```bash
+$ mkdir my_octavia_project && cd my_octavia_project
+$ octavia init
+🐙 - Octavia is targetting your Airbyte instance running at http://localhost:8000 on workspace e1f46f7d-5354-4200-aed6-7816015ca54b.
+🐙 - Project is not yet initialized.
+🔨 - Initializing the project.
+✅ - Created the following directories: sources, destinations, connections.
+$ ls
+connections  destinations sources
+```
+
+### `octavia list connectors sources`
+List all the source connectors currently available on your Airbyte instance.
+
+#### Synopsis
+```bash
+$ octavia list connectors sources
+🐙 - Octavia is targetting your Airbyte instance running at http://localhost:8000 on workspace e1f46f7d-5354-4200-aed6-7816015ca54b.
+NAME                            DOCKER REPOSITORY                              DOCKER IMAGE TAG  SOURCE DEFINITION ID
+Airtable                        airbyte/source-airtable                        0.1.1             14c6e7ea-97ed-4f5e-a7b5-25e9a80b8212
+AWS CloudTrail                  airbyte/source-aws-cloudtrail                  0.1.4             6ff047c0-f5d5-4ce5-8c81-204a830fa7e1
+Amazon Ads                      airbyte/source-amazon-ads                      0.1.3             c6b0a29e-1da9-4512-9002-7bfd0cba2246
+Amazon Seller Partner           airbyte/source-amazon-seller-partner           0.2.15            e55879a8-0ef8-4557-abcf-ab34c53ec460
+```
+
+### `octavia list connectors destinations`
+List all the destinations connectors currently available on your Airbyte instance.
+
+#### Synopsis
+```bash
+$ octavia list connectors destinations
+🐙 - Octavia is targetting your Airbyte instance running at http://localhost:8000 on workspace e1f46f7d-5354-4200-aed6-7816015ca54b.
+NAME                                  DOCKER REPOSITORY                                 DOCKER IMAGE TAG  DESTINATION DEFINITION ID
+Azure Blob Storage                    airbyte/destination-azure-blob-storage            0.1.3             b4c5d105-31fd-4817-96b6-cb923bfc04cb
+Amazon SQS                            airbyte/destination-amazon-sqs                    0.1.0             0eeee7fb-518f-4045-bacc-9619e31c43ea
+BigQuery                              airbyte/destination-bigquery                      0.6.11            22f6c74f-5699-40ff-833c-4a879ea40133
+BigQuery (denormalized typed struct)  airbyte/destination-bigquery-denormalized         0.2.10            079d5540-f236-4294-ba7c-ade8fd918496
+```
+
+### `octavia list connectors destinations`
+List all the destinations connectors currently available on your Airbyte instance.
+
+#### Synopsis
+```bash
+$ octavia list connectors destinations
+🐙 - Octavia is targetting your Airbyte instance running at http://localhost:8000 on workspace e1f46f7d-5354-4200-aed6-7816015ca54b.
+NAME                                  DOCKER REPOSITORY                                 DOCKER IMAGE TAG  DESTINATION DEFINITION ID
+Azure Blob Storage                    airbyte/destination-azure-blob-storage            0.1.3             b4c5d105-31fd-4817-96b6-cb923bfc04cb
+Amazon SQS                            airbyte/destination-amazon-sqs                    0.1.0             0eeee7fb-518f-4045-bacc-9619e31c43ea
+BigQuery                              airbyte/destination-bigquery                      0.6.11            22f6c74f-5699-40ff-833c-4a879ea40133
+BigQuery (denormalized typed struct)  airbyte/destination-bigquery-denormalized         0.2.10            079d5540-f236-4294-ba7c-ade8fd918496
+```
+
+### `octavia list workspace sources`
+List all the sources existing on your targeted Airbyte instance.
+
+#### Synopsis
+```bash
+$ octavia list workspace sources
+🐙 - Octavia is targetting your Airbyte instance running at http://localhost:8000 on workspace e1f46f7d-5354-4200-aed6-7816015ca54b.
+NAME     SOURCE NAME  SOURCE ID
+weather  OpenWeather  c4aa8550-2122-4a33-9a21-adbfaa638544
+```
+
+### `octavia list workspace destinations`
+List all the destinations existing on your targeted Airbyte instance.
+
+#### Synopsis
+```bash
+$ octavia list workspace destinations
+🐙 - Octavia is targetting your Airbyte instance running at http://localhost:8000 on workspace e1f46f7d-5354-4200-aed6-7816015ca54b.
+NAME   DESTINATION NAME  DESTINATION ID
+my_db  Postgres          c0c977c2-48e7-46fe-9f57-576285c26d42
+```
+
+### `octavia list workspace connections`
+List all the connections existing on your targeted Airbyte instance.
+
+#### Synopsis
+```bash
+$ octavia list workspace connections
+🐙 - Octavia is targetting your Airbyte instance running at http://localhost:8000 on workspace e1f46f7d-5354-4200-aed6-7816015ca54b.
+NAME           CONNECTION ID                         STATUS  SOURCE ID                             DESTINATION ID
+weather_to_pg  a4491317-153e-436f-b646-0b39338f9aab  active  c4aa8550-2122-4a33-9a21-adbfaa638544  c0c977c2-48e7-46fe-9f57-576285c26d42
+```
 
 # Secret management
 Sources and destinations configurations have credential fields that you **do not want to store as plain text and version on Git**.
